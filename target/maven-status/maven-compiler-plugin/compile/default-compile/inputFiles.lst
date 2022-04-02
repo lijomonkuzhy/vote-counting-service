@@ -1,6 +1,10 @@
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/service/PreferentialVoteCounter.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/service/ConsoleReader.java
+/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/repository/CandidateFileReader.java
+/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/model/Ballot.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/main/Application.java
-/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/repository/CandidateLoader.java
+/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/service/CandidateLoader.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/service/ConsoleWriter.java
-/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/repository/BallotLoader.java
+/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/service/BallotLoader.java
+/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/exception/ServiceException.java
+/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/model/Candidate.java
