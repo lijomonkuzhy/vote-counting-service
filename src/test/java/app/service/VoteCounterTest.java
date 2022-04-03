@@ -3,6 +3,7 @@ package app.service;
 import app.exception.ServiceException;
 import app.model.Ballot;
 import app.model.Candidate;
+import app.repository.CandidateFileReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,13 +14,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIOException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,13 +32,13 @@ class VoteCounterTest {
     @Mock
     private BallotLoader ballotLoaderMock;
     @Mock
-    private CandidateLoader candidateLoaderMock;
+    private CandidateFileReader candidateFileReaderMock;
     @Mock
     private PreferentialVoteCounter preferentialVoteCounter;
 
     @BeforeEach
     public void setUp() {
-        voteCounter = new VoteCounter(candidateLoaderMock, preferentialVoteCounter, ballotLoaderMock);
+        voteCounter = new VoteCounter(candidateFileReaderMock, preferentialVoteCounter, ballotLoaderMock);
     }
 
     @Test
@@ -45,14 +47,13 @@ class VoteCounterTest {
         when(ballotLoaderMock.loadBallots()).thenReturn(provideBallots());
 
         assertThat(voteCounter.processVotes()).isEqualTo("Ten pin bowling");
-
     }
 
     @ParameterizedTest
     @MethodSource("provideEmptyAndNullCandidates")
     @DisplayName("Given no candidates for voting, Then method invocation should result in ServiceException")
-    public void testFindTheWinnerFailsWithNoCandidates(Set<Candidate> candidates) throws IOException {
-        when(candidateLoaderMock.loadCandidateList()).thenReturn(candidates);
+    public void testFindTheWinnerFailsWithNoCandidates(LinkedHashSet<Candidate> candidates) throws IOException {
+        when(candidateFileReaderMock.loadCandidateList(anyString())).thenReturn(candidates);
 
         assertThatExceptionOfType(ServiceException.class)
                 .isThrownBy(() -> voteCounter.processVotes())
@@ -62,13 +63,13 @@ class VoteCounterTest {
     @Test
     @DisplayName("Given IOException while reading candidate file, Then method invocation should result in IOException")
     public void testFindTheWinnerFailsWithIOException() throws IOException, ServiceException {
-        when(candidateLoaderMock.loadCandidateList()).thenThrow(IOException.class);
+        when(candidateFileReaderMock.loadCandidateList(anyString())).thenThrow(IOException.class);
 
         assertThatIOException().isThrownBy(() -> voteCounter.processVotes());
     }
 
-    private static Stream<Set<Candidate>> provideEmptyAndNullCandidates() {
-        return Stream.of(null, Set.of());
+    private static Stream<LinkedHashSet<Candidate>> provideEmptyAndNullCandidates() {
+        return Stream.of(null, new LinkedHashSet<Candidate>());
     }
 
     private List<Ballot> provideBallots() {
