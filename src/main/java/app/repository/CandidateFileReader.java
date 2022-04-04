@@ -1,7 +1,7 @@
 package app.repository;
 
 import app.model.Candidate;
-import app.util.StringValidator;
+import app.util.validator.StringValidator;
 
 import java.io.IOException;
 import java.nio.file.Files;

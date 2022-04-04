@@ -1,20 +1,20 @@
 package app.main;
 
 import app.repository.CandidateFileReader;
-import app.service.BallotLoader;
+import app.repository.BallotReader;
 import app.service.PreferentialVoteCounter;
 import app.service.VoteCounter;
 
-import static app.service.ConsoleWriter.printError;
+import static app.util.console.ConsoleWriter.printError;
 
 public class Application {
 
     public static void main(String[] args) {
         final CandidateFileReader candidateFileReader = new CandidateFileReader();
         final PreferentialVoteCounter preferentialVoteCounter = new PreferentialVoteCounter();
-        final BallotLoader ballotLoader = new BallotLoader();
+        final BallotReader ballotReader = new BallotReader(System.in);
 
-        VoteCounter voteCounter = new VoteCounter(candidateFileReader, preferentialVoteCounter, ballotLoader);
+        final VoteCounter voteCounter = new VoteCounter(candidateFileReader, preferentialVoteCounter, ballotReader);
 
         try {
             voteCounter.processVotes();

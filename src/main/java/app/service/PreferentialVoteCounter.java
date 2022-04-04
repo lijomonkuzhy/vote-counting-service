@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class PreferentialVoteCounter {
 
-    public String findTheWinner(Set<Candidate> candidates, List<Ballot> ballots) throws ServiceException {
+    public String findTheWinner(final  Set<Candidate> candidates, final List<Ballot> ballots) throws ServiceException {
         return null;
 
     }

@@ -1,4 +1,4 @@
-package app.util;
+package app.util.validator;
 
 import java.util.Collection;
 

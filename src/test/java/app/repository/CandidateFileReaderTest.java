@@ -41,8 +41,6 @@ class CandidateFileReaderTest {
 
         assertThat(candidateFileReader.loadCandidateList(filePath))
                 .isEqualTo(validCandidateList());
-
-        System.out.println(validCandidateList());
     }
 
     private LinkedHashSet<Candidate> validCandidateList() throws IOException {

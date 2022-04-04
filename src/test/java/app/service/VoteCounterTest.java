@@ -4,6 +4,7 @@ import app.exception.ServiceException;
 import app.model.Ballot;
 import app.model.Candidate;
 import app.repository.CandidateFileReader;
+import app.repository.BallotReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static app.util.BallotProvider.VALID_CANDIDATE_OPTIONS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIOException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
@@ -30,7 +32,7 @@ class VoteCounterTest {
     private VoteCounter voteCounter;
 
     @Mock
-    private BallotLoader ballotLoaderMock;
+    private BallotReader ballotReaderMock;
     @Mock
     private CandidateFileReader candidateFileReaderMock;
     @Mock
@@ -38,13 +40,13 @@ class VoteCounterTest {
 
     @BeforeEach
     public void setUp() {
-        voteCounter = new VoteCounter(candidateFileReaderMock, preferentialVoteCounter, ballotLoaderMock);
+        voteCounter = new VoteCounter(candidateFileReaderMock, preferentialVoteCounter, ballotReaderMock);
     }
 
     @Test
     @DisplayName("Given valid ballots, Then method should return the winning candidate name")
     public void testFindTheWinnerSuccess() throws IOException, ServiceException {
-        when(ballotLoaderMock.loadBallots()).thenReturn(provideBallots());
+        when(ballotReaderMock.loadBallots(VALID_CANDIDATE_OPTIONS)).thenReturn(provideBallots());
 
         assertThat(voteCounter.processVotes()).isEqualTo("Ten pin bowling");
     }
