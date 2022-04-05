@@ -6,6 +6,7 @@ import app.service.PreferentialVoteCounter;
 import app.service.VoteCounter;
 
 import static app.util.console.ConsoleWriter.printError;
+import static app.util.console.ConsoleWriter.printInfo;
 
 public class Application {
 
@@ -17,7 +18,7 @@ public class Application {
         final VoteCounter voteCounter = new VoteCounter(candidateFileReader, preferentialVoteCounter, ballotReader);
 
         try {
-            voteCounter.processVotes();
+            printInfo("Vote count is completed. The winner is: " + voteCounter.processVotes());
         } catch (Exception e) {
             printError(e);
         }

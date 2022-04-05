@@ -3,8 +3,8 @@ package app.service;
 import app.exception.ServiceException;
 import app.model.Ballot;
 import app.model.Candidate;
-import app.repository.CandidateFileReader;
 import app.repository.BallotReader;
+import app.repository.CandidateFileReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,9 +20,11 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static app.util.BallotProvider.VALID_CANDIDATE_OPTIONS;
-import static org.assertj.core.api.Assertions.assertThat;
+import static app.util.BallotProvider.provideValidBallots;
+import static app.util.CandidateProvider.provideValidCandidates;
 import static org.assertj.core.api.Assertions.assertThatIOException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -46,9 +48,13 @@ class VoteCounterTest {
     @Test
     @DisplayName("Given valid ballots, Then method should return the winning candidate name")
     public void testFindTheWinnerSuccess() throws IOException, ServiceException {
-        when(ballotReaderMock.loadBallots(VALID_CANDIDATE_OPTIONS)).thenReturn(provideBallots());
+        LinkedHashSet<Candidate> candidates = provideValidCandidates();
+        List<Ballot> ballots = provideValidBallots();
+        when(candidateFileReaderMock.loadCandidateList(anyString())).thenReturn(candidates);
+        when(ballotReaderMock.loadBallots(VALID_CANDIDATE_OPTIONS)).thenReturn(ballots);
+        when(preferentialVoteCounter.findTheWinner(candidates, ballots)).thenReturn("B. Ten pin bowling");
 
-        assertThat(voteCounter.processVotes()).isEqualTo("Ten pin bowling");
+        assertThat(voteCounter.processVotes()).isEqualTo("B. Ten pin bowling");
     }
 
     @ParameterizedTest
@@ -71,20 +77,7 @@ class VoteCounterTest {
     }
 
     private static Stream<LinkedHashSet<Candidate>> provideEmptyAndNullCandidates() {
-        return Stream.of(null, new LinkedHashSet<Candidate>());
+        return Stream.of(null, new LinkedHashSet<>());
     }
-
-    private List<Ballot> provideBallots() {
-        return List.of(
-                Ballot.newBuilder().withPreferences(List.of('A', 'B', 'D', 'C')).build(),
-                Ballot.newBuilder().withPreferences(List.of('D', 'A')).build(),
-                Ballot.newBuilder().withPreferences(List.of('B', 'A', 'D')).build(),
-                Ballot.newBuilder().withPreferences(List.of('D', 'B')).build(),
-                Ballot.newBuilder().withPreferences(List.of('C', 'A', 'B', 'D')).build(),
-                Ballot.newBuilder().withPreferences(List.of('B', 'A', 'C')).build(),
-                Ballot.newBuilder().withPreferences(List.of('C', 'D', 'A', 'B')).build(),
-                Ballot.newBuilder().withPreferences(List.of('C', 'B', 'A', 'D')).build());
-    }
-
 
 }

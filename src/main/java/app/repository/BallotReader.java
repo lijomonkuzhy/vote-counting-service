@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,6 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static app.util.console.ConsoleWriter.printInfo;
+import static app.util.validator.BallotValidator.isValidBallot;
 
 public class BallotReader {
     private Scanner scanner;
@@ -23,7 +23,6 @@ public class BallotReader {
     }
 
     public List<Ballot> loadBallots(final Set<Character> options) throws IOException {
-        printInfo("Please vote from the below options in preference order by typing in a letter sequence on a single line.");
         printInfo("Please enter 'tally' when everyone is done voting.");
 
         return retrieveBallotsFromConsole(options);
@@ -48,33 +47,6 @@ public class BallotReader {
             }
         }
         return Collections.unmodifiableList(ballots);
-    }
-
-    private boolean isValidBallot(final String userPreferenceLine,
-                                  final Set<Character> candidateOptions) throws IOException {
-        Set<Character> userPreferenceSet = new HashSet<>();
-
-        char userPreference;
-        for (int i = 0; i < userPreferenceLine.length(); i++) {
-            userPreference = userPreferenceLine.charAt(i);
-
-            if (!candidateOptions.contains(userPreference)) {
-                printInfo(String.format("Ignoring the ballot. Ballot contains the option %s which does not correspond to any candidate",
-                        userPreference));
-                return false;
-            }
-
-            if (userPreferenceSet.contains(userPreference)) {
-                printInfo(String.format("Ignoring the ballot. Ballot contains the option %s more than once.",
-                        userPreference));
-                return false;
-            } else {
-                userPreferenceSet.add(userPreference);
-            }
-
-        }
-
-        return true;
     }
 
 

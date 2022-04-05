@@ -20,7 +20,7 @@ This is a standalone java application.
 ## Setup
 How to start/run this project?
 - You can use an IDE like NetBeans, Intellij IDEA, or Eclipse to run this project from main method.
-- You can also run this from commandline -  _mvn exec:java -Dexec.mainClass="app.main.Application"_
+- You can also install and run it locally from commandline - 'mvn clean install'
 - You may also use mvn lifeCycle commands to compile test install etc. For more details https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html 
 
 ## Usage
