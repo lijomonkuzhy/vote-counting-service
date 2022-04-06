@@ -10,8 +10,8 @@ import static app.util.BallotProvider.VALID_CANDIDATE_OPTIONS;
 import static app.util.BallotProvider.provideValidBallots;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-class BallotReaderTest {
-    private BallotReader ballotReader;
+class BallotConsoleReaderTest {
+    private BallotConsoleReader ballotReader;
 
     @Test
     @DisplayName("Given valid preferences,Then method should create valid ballots corresponding to given input.")
@@ -27,7 +27,7 @@ class BallotReaderTest {
                 "tally";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(inputData.getBytes());
 
-        ballotReader = new BallotReader(inputStream);
+        ballotReader = new BallotConsoleReader(inputStream);
 
         assertThat(ballotReader.loadBallots(VALID_CANDIDATE_OPTIONS)).isEqualTo(provideValidBallots());
     }
@@ -46,7 +46,7 @@ class BallotReaderTest {
                 "tally";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(inputData.getBytes());
 
-        ballotReader = new BallotReader(inputStream);
+        ballotReader = new BallotConsoleReader(inputStream);
 
         assertThat(ballotReader.loadBallots(VALID_CANDIDATE_OPTIONS)).isEqualTo(provideValidBallots());
     }
@@ -66,7 +66,7 @@ class BallotReaderTest {
                 "tally";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(inputData.getBytes());
 
-        ballotReader = new BallotReader(inputStream);
+        ballotReader = new BallotConsoleReader(inputStream);
 
         assertThat(ballotReader.loadBallots(VALID_CANDIDATE_OPTIONS)).isEqualTo(provideValidBallots());
     }
@@ -86,7 +86,7 @@ class BallotReaderTest {
                 "tally";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(inputData.getBytes());
 
-        ballotReader = new BallotReader(inputStream);
+        ballotReader = new BallotConsoleReader(inputStream);
 
         assertThat(ballotReader.loadBallots(VALID_CANDIDATE_OPTIONS)).isEqualTo(provideValidBallots());
     }

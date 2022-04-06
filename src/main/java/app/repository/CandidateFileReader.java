@@ -9,8 +9,9 @@ import java.nio.file.Path;
 import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
 
-public class CandidateFileReader {
+public class CandidateFileReader implements CandidateReader {
 
+    @Override
     public LinkedHashSet<Candidate> loadCandidateList(final String filePath) throws IOException {
         final char[] options = {'A'};
         return Files.lines(Path.of(filePath))

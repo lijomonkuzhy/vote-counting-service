@@ -3,6 +3,8 @@
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/main/Application.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/service/VoteCounter.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/repository/BallotReader.java
+/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/repository/CandidateReader.java
+/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/repository/BallotConsoleReader.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/exception/ServiceException.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/util/console/ConsoleReader.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/main/java/app/util/validator/BallotValidator.java

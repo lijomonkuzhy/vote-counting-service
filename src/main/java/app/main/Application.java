@@ -1,6 +1,6 @@
 package app.main;
 
-import app.repository.BallotReader;
+import app.repository.BallotConsoleReader;
 import app.repository.CandidateFileReader;
 import app.service.VoteCountingStrategyFactory;
 import app.service.VotingSystemProcessor;
@@ -13,7 +13,7 @@ public class Application {
     public static void main(String[] args) {
         final CandidateFileReader candidateFileReader = new CandidateFileReader();
         final VoteCountingStrategyFactory voteCountingStrategyFactory = new VoteCountingStrategyFactory();
-        final BallotReader ballotReader = new BallotReader(System.in);
+        final BallotConsoleReader ballotReader = new BallotConsoleReader(System.in);
 
         final VotingSystemProcessor votingSystemProcessor = new VotingSystemProcessor(candidateFileReader, voteCountingStrategyFactory, ballotReader);
 
