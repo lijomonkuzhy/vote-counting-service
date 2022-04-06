@@ -7,6 +7,6 @@ public final class StringValidator {
     }
 
     private StringValidator() {
-        throw new AssertionError("Can not be instantiated");
+        throw new AssertionError("Can not be instantiated.");
     }
 }

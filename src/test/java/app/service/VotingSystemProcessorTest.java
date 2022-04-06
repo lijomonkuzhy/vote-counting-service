@@ -29,32 +29,32 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class VoteCounterTest {
+class VotingSystemProcessorTest {
 
-    private VoteCounter voteCounter;
+    private VotingSystemProcessor votingSystemProcessor;
 
     @Mock
     private BallotReader ballotReaderMock;
     @Mock
     private CandidateFileReader candidateFileReaderMock;
     @Mock
-    private PreferentialVoteCounter preferentialVoteCounter;
+    private VoteCountingStrategyFactory voteCountingStrategyFactory;
 
     @BeforeEach
     public void setUp() {
-        voteCounter = new VoteCounter(candidateFileReaderMock, preferentialVoteCounter, ballotReaderMock);
+        votingSystemProcessor = new VotingSystemProcessor(candidateFileReaderMock, voteCountingStrategyFactory, ballotReaderMock);
     }
 
     @Test
     @DisplayName("Given valid ballots, Then method should return the winning candidate name")
-    public void testFindTheWinnerSuccess() throws IOException, ServiceException {
+    public void testFindTheWinnerSuccess() throws Exception {
         LinkedHashSet<Candidate> candidates = provideValidCandidates();
         List<Ballot> ballots = provideValidBallots();
         when(candidateFileReaderMock.loadCandidateList(anyString())).thenReturn(candidates);
         when(ballotReaderMock.loadBallots(VALID_CANDIDATE_OPTIONS)).thenReturn(ballots);
-        when(preferentialVoteCounter.findTheWinner(candidates, ballots)).thenReturn("B. Ten pin bowling");
+        when(voteCountingStrategyFactory.provideVoteCounter("preferentialVoteCounter")).thenReturn(new PreferentialVoteCounter());
 
-        assertThat(voteCounter.processVotes()).isEqualTo("B. Ten pin bowling");
+        assertThat(votingSystemProcessor.processVotes("preferentialVoteCounter")).isEqualTo("B. Ten pin bowling");
     }
 
     @ParameterizedTest
@@ -64,7 +64,7 @@ class VoteCounterTest {
         when(candidateFileReaderMock.loadCandidateList(anyString())).thenReturn(candidates);
 
         assertThatExceptionOfType(ServiceException.class)
-                .isThrownBy(() -> voteCounter.processVotes())
+                .isThrownBy(() -> votingSystemProcessor.processVotes("preferentialVoteCounter"))
                 .withMessage("No Candidates available.");
     }
 
@@ -73,7 +73,7 @@ class VoteCounterTest {
     public void testFindTheWinnerFailsWithIOException() throws IOException, ServiceException {
         when(candidateFileReaderMock.loadCandidateList(anyString())).thenThrow(IOException.class);
 
-        assertThatIOException().isThrownBy(() -> voteCounter.processVotes());
+        assertThatIOException().isThrownBy(() -> votingSystemProcessor.processVotes("preferentialVoteCounter"));
     }
 
     private static Stream<LinkedHashSet<Candidate>> provideEmptyAndNullCandidates() {

@@ -13,14 +13,13 @@
 
 ## Technologies Used
 This is a standalone java application.
-- JDK - version 15
-- Maven - version 3.0
-- JUnit - version 4
+- JDK - version 17.0.2
+- Maven - version 3.8.5
+- JUnit - version 5.5.2
 
 ## Setup
 How to start/run this project?
 - You can use an IDE like NetBeans, Intellij IDEA, or Eclipse to run this project from main method.
-- You can also install and run it locally from commandline - 'mvn clean install'
 - You may also use mvn lifeCycle commands to compile test install etc. For more details https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html 
 
 ## Usage
@@ -28,6 +27,7 @@ How to start/run this project?
 - At start up, the list of options will be displayed on the screen with a unique letter prefix.
 - Users can then vote for their choices in preference order by typing in a letter sequence on a single line.
 - Follow the instruction in the commandline and complete the voting process.
+- Please note that the application supports only preferential scheme now.
 
 ## Room for Improvement
-- TODO 
+- Add functional tests 

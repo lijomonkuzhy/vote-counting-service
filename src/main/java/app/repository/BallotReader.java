@@ -2,7 +2,6 @@ package app.repository;
 
 import app.model.Ballot;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,39 +15,41 @@ import static app.util.console.ConsoleWriter.printInfo;
 import static app.util.validator.BallotValidator.isValidBallot;
 
 public class BallotReader {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public BallotReader(InputStream inputStream) {
         this.scanner = new Scanner(inputStream);
     }
 
-    public List<Ballot> loadBallots(final Set<Character> options) throws IOException {
+    public List<Ballot> loadBallots(final Set<Character> options) {
         printInfo("Please enter 'tally' when everyone is done voting.");
 
         return retrieveBallotsFromConsole(options);
     }
 
-    private List<Ballot> retrieveBallotsFromConsole(final Set<Character> ocandidateOptions) throws IOException {
+    private List<Ballot> retrieveBallotsFromConsole(final Set<Character> candidateOptions) {
 
         final List<Ballot> ballots = new ArrayList<>();
 
         String inputLine;
+        try {
+            while (scanner.hasNext()) {
+                inputLine = scanner.next().replaceAll("\\s", "");
+                if (inputLine.equalsIgnoreCase("tally")) {
+                    printInfo("Thanks for the votes. No more votes allowed.");
+                    return ballots;
 
-        while (scanner.hasNext()) {
-            inputLine = scanner.next().replaceAll("\\s", "");
-            if (inputLine.equalsIgnoreCase("tally")) {
-                printInfo("Thanks for the votes. No more votes allowed.");
-                return ballots;
-
-            } else if (isValidBallot(inputLine, ocandidateOptions)) {
-                ballots.add(Ballot.newBuilder().withPreferences(
-                        inputLine.chars().mapToObj(c -> (char) c).collect(Collectors.toCollection(LinkedList::new)))
-                        .build());
+                } else if (isValidBallot(inputLine, candidateOptions)) {
+                    ballots.add(Ballot.newBuilder().withPreferences(
+                            inputLine.chars().mapToObj(c -> (char) c).collect(Collectors.toCollection(LinkedList::new)))
+                            .build());
+                }
             }
+        } finally {
+            scanner.close();
         }
         return Collections.unmodifiableList(ballots);
     }
-
 
 }
 

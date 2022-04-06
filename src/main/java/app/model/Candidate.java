@@ -6,10 +6,6 @@ public class Candidate {
     private final char option;
     private final String name;
 
-    public String getName() {
-        return name;
-    }
-
     public char getOption() {
         return option;
     }

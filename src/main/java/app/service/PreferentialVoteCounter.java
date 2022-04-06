@@ -10,10 +10,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static app.util.console.ConsoleWriter.printCandidateBallotCount;
 import static app.util.console.ConsoleWriter.printInfo;
 
-public class PreferentialVoteCounter {
+public class PreferentialVoteCounter implements VoteCounter {
 
+    @Override
     public String findTheWinner(final Set<Candidate> candidates, final List<Ballot> ballots) throws ServiceException {
         printInfo("Vote counting in progress...");
 
@@ -36,24 +38,20 @@ public class PreferentialVoteCounter {
                 break;
             }
 
-            allocateBallotsToNextPreference(candidateToBallotsMap, candidateWithLeastBallots);
-            candidateToBallotsMap.remove(candidateWithLeastBallots);
-            printInfo(String.format("Candidate with least number of ballots will be eliminated and the votes will be reallocated.The candidate selected in this round is '%s'", candidateWithLeastBallots));
+            if ((candidateToBallotsMap.get(candidateWithMostBallots).size()) < quotaRequiredToWin) {
+                allocateBallotsToNextPreference(candidateToBallotsMap, candidateWithLeastBallots);
+                candidateToBallotsMap.remove(candidateWithLeastBallots);
+                printInfo(String.format("Candidate with least number of ballots will be eliminated and the votes will be reallocated.The candidate selected in this round is '%s'", candidateWithLeastBallots));
+            }
 
         } while ((candidateToBallotsMap.get(candidateWithMostBallots).size()) < quotaRequiredToWin);
 
         return findTheCandidateWithWinningOption(candidateWithMostBallots, candidates);
-
     }
 
     private boolean hasAllremainingCandidatesHaveSameBallotCount(final char candidateWithMostBallots,
                                                                  final char candidateWithLeastBallots) {
         return candidateWithMostBallots == candidateWithLeastBallots;
-    }
-
-    private void printCandidateBallotCount(final Map<Character, List<Ballot>> candidateToBallotsMap) {
-        printInfo("The number of votes currently assigned to each candidate are: ");
-        candidateToBallotsMap.forEach((key, value) -> printInfo(String.format("%s has %s ballots.", key, value.size())));
     }
 
     private int quotaRequiredToWin(final Map<Character, List<Ballot>> candidateToBallotsMap) {
@@ -64,7 +62,7 @@ public class PreferentialVoteCounter {
 
     private String findTheCandidateWithWinningOption(final char candidateOption, final Set<Candidate> candidates) throws ServiceException {
         return candidates.stream().filter(candidate -> candidate.getOption() == candidateOption).map(Candidate::toString).findFirst()
-                .orElseThrow(() -> new ServiceException(""));
+                .orElseThrow(() -> new ServiceException("Failed to find the winner. Please try again."));
     }
 
     private Map<Character, List<Ballot>> buildCandidateToBallotMap(List<Ballot> ballots) {
@@ -81,7 +79,7 @@ public class PreferentialVoteCounter {
             for (char preference : ballot.getPreferences()) {
                 if (candidateToBallotsMap.containsKey(preference)) {
                     candidateToBallotsMap.get(preference).add(ballot);
-                    break; //TODO is break bad practice
+                    break;
                 }
             }
         }
@@ -91,19 +89,17 @@ public class PreferentialVoteCounter {
 
         Character candidate = candidateToBallotsMap.entrySet().stream().max(Comparator.comparingInt(entry -> entry.getValue().size()))
                 .map(Map.Entry::getKey)
-                .orElse(null);//TODO May change to optional
+                .orElse(null);
 
         printInfo(String.format("Leading Candidate selected is '%s'", candidate));
-
         return candidate;
     }
 
     private static Character findCandidateWithLeastBallots(Map<Character, List<Ballot>> candidateToBallotsMap) {
 
-        //TODO what if multiple candidates with same votes
         return candidateToBallotsMap.entrySet().stream().min(Comparator.comparingInt(entry -> entry.getValue().size()))
                 .map(Map.Entry::getKey)
-                .orElse(null);//May change to optional
+                .orElse(null);
     }
 
     private static int findBallotCount(Map<Character, List<Ballot>> candidateToBallotsMap) {

@@ -17,18 +17,18 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 class PreferentialVoteCounterTest {
     private static final LinkedHashSet<Candidate> VALID_CANDIDATES = provideValidCandidates();
     private static List<Ballot> VALID_BALLOTS = provideValidBallots();
-    private PreferentialVoteCounter preferentialVoteCounter;
+    private PreferentialVoteCounter preferentialVoteCountingStrategy;
 
     @BeforeEach
     public void setUp() {
-        preferentialVoteCounter = new PreferentialVoteCounter();
+        preferentialVoteCountingStrategy = new PreferentialVoteCounter();
     }
 
     @Test
     @DisplayName("Given valid ballots and candidates, Then the method should return the winner.")
     public void testFindTheWinnerSuccess() throws ServiceException {
         List<Ballot> ballots = provideValidBallots(List.of("ABDC", "DA", "BAD", "DB", "CABD", "BAC", "CDAB", "CBAD"));
-        assertThat(preferentialVoteCounter.findTheWinner(VALID_CANDIDATES, ballots)).isEqualTo("B. Ten pin bowling");
+        assertThat(preferentialVoteCountingStrategy.findTheWinner(VALID_CANDIDATES, ballots)).isEqualTo("B. Ten pin bowling");
     }
 
     @Test
@@ -36,7 +36,7 @@ class PreferentialVoteCounterTest {
             "Then the winner is selected at random.")
     public void testFindTheWinnerWithJustOneBallot() throws ServiceException {
         List<Ballot> ballots = provideValidBallots(List.of("A", "B", "C", "D", "E", "F", "G", "H", "I"));
-        assertThat(preferentialVoteCounter.findTheWinner(VALID_CANDIDATES, ballots)).isEqualTo("A. Winery tour");
+        assertThat(preferentialVoteCountingStrategy.findTheWinner(VALID_CANDIDATES, ballots)).isEqualTo("A. Winery tour");
     }
 
     @Test
@@ -44,7 +44,7 @@ class PreferentialVoteCounterTest {
             "Then the candidate with the quota is identified as the winner.")
     public void testFindTheWinnerWithCandidateMeetsQuotaInFirstRound() throws ServiceException {
         List<Ballot> ballots = provideValidBallots(List.of("ABDC", "BAD", "C", "CABD", "BAC", "CDAB", "CBAD"));
-        assertThat(preferentialVoteCounter.findTheWinner(VALID_CANDIDATES, ballots)).isEqualTo("C. Movie night");
+        assertThat(preferentialVoteCountingStrategy.findTheWinner(VALID_CANDIDATES, ballots)).isEqualTo("C. Movie night");
     }
 
     @Test
@@ -52,7 +52,7 @@ class PreferentialVoteCounterTest {
             "Then their ballots will be reassigned to the next available preference to identify the winner.")
     public void testFindTheWinnerWithManyCandidatesHaveTheLeastNumberOfBallots() throws ServiceException {
         List<Ballot> ballots = provideValidBallots(List.of("ABCD", "ACD", "BCD", "ECD", "DCA"));
-        assertThat(preferentialVoteCounter.findTheWinner(VALID_CANDIDATES, ballots)).isEqualTo("D. Dinner at a restaurant");
+        assertThat(preferentialVoteCountingStrategy.findTheWinner(VALID_CANDIDATES, ballots)).isEqualTo("D. Dinner at a restaurant");
     }
 
     @Test
@@ -60,6 +60,6 @@ class PreferentialVoteCounterTest {
             "Then the winner is selected at random.")
     public void testFindTheWinnerWithWithTwoCandidtesHaveSameCount() throws ServiceException {
         List<Ballot> ballots = provideValidBallots(List.of("AB", "AC", "A", "BG", "BG", "BG", "CD"));
-        assertThat(preferentialVoteCounter.findTheWinner(VALID_CANDIDATES, ballots)).isEqualTo("A. Winery tour");
+        assertThat(preferentialVoteCountingStrategy.findTheWinner(VALID_CANDIDATES, ballots)).isEqualTo("A. Winery tour");
     }
 }
