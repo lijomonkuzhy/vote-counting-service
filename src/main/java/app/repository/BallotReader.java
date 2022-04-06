@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static app.util.console.ConsoleReader.retrieveBallotsFromConsole;
 import static app.util.console.ConsoleWriter.printInfo;
 import static app.util.validator.BallotValidator.isValidBallot;
 
@@ -24,31 +25,7 @@ public class BallotReader {
     public List<Ballot> loadBallots(final Set<Character> options) {
         printInfo("Please enter 'tally' when everyone is done voting.");
 
-        return retrieveBallotsFromConsole(options);
-    }
-
-    private List<Ballot> retrieveBallotsFromConsole(final Set<Character> candidateOptions) {
-
-        final List<Ballot> ballots = new ArrayList<>();
-
-        String inputLine;
-        try {
-            while (scanner.hasNext()) {
-                inputLine = scanner.next().replaceAll("\\s", "");
-                if (inputLine.equalsIgnoreCase("tally")) {
-                    printInfo("Thanks for the votes. No more votes allowed.");
-                    return ballots;
-
-                } else if (isValidBallot(inputLine, candidateOptions)) {
-                    ballots.add(Ballot.newBuilder().withPreferences(
-                            inputLine.chars().mapToObj(c -> (char) c).collect(Collectors.toCollection(LinkedList::new)))
-                            .build());
-                }
-            }
-        } finally {
-            scanner.close();
-        }
-        return Collections.unmodifiableList(ballots);
+        return retrieveBallotsFromConsole(options, scanner);
     }
 
 }

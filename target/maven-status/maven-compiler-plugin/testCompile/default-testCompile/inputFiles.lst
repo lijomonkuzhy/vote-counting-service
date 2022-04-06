@@ -2,7 +2,5 @@
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/test/java/app/service/VotingSystemProcessorTest.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/test/java/app/repository/CandidateFileReaderTest.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/test/java/app/util/BallotProvider.java
-/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/test/java/app/service/ConsoleWriterTest.java
-/Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/test/java/app/main/ApplicationTest.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/test/java/app/service/PreferentialVoteCounterTest.java
 /Users/lijomonkuzhy/Documents/lijo/job/repositories/vote-counting-service/src/test/java/app/repository/BallotReaderTest.java
